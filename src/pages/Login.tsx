@@ -16,11 +16,16 @@ import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
 
 const formSchema = z.object({
-  email: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
+  email: z
+    .string()
+    .min(1, {
+      message: 'You must enter an email address.',
+    })
+    .email({
+      message: 'Please enter a valid email address',
+    }),
+  password: z.string().min(1, {
+    message: 'You must enter a password.',
   }),
 });
 
