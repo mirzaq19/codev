@@ -79,7 +79,7 @@ const Register = () => {
                     {/* // change border color based on validation */}
                     <Input placeholder="name" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
@@ -92,7 +92,7 @@ const Register = () => {
                   <FormControl>
                     <Input type="email" placeholder="email" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
@@ -105,7 +105,7 @@ const Register = () => {
                   <FormControl>
                     <Input type="password" placeholder="password" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
@@ -122,7 +122,7 @@ const Register = () => {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
