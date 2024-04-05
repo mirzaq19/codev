@@ -64,7 +64,7 @@ const Register = () => {
             alt="Codev logo"
             className="w-8 h-8 md:w-12 md:h-12"
           />
-          <h1 className="text-xl md:text-3xl font-title font-bold text-center mb-6">
+          <h1 className="font-title font-bold text-center mb-6">
             Co-Dev Register
           </h1>
         </div>
