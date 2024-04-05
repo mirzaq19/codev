@@ -22,14 +22,16 @@ const Navbar = ({ classname, ...rest }: NavbarProps) => {
           <div>
             <ul className="flex items-center space-x-2">
               <li>
-                <Button size="sm">
-                  <Link to="/login">Login</Link>
-                </Button>
+                <Link to="/login">
+                  <Button size="sm">Login</Button>
+                </Link>
               </li>
               <li>
-                <Button size="sm" variant="outline">
-                  <Link to="/register">Register</Link>
-                </Button>
+                <Link to="/register">
+                  <Button size="sm" variant="outline">
+                    Register
+                  </Button>
+                </Link>
               </li>
             </ul>
           </div>
