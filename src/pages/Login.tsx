@@ -67,7 +67,7 @@ const Login = () => {
                   <FormControl>
                     <Input type="email" placeholder="email" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
@@ -80,7 +80,7 @@ const Login = () => {
                   <FormControl>
                     <Input type="password" placeholder="password" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="font-normal text-sm" />
                 </FormItem>
               )}
             />
