@@ -59,8 +59,12 @@ const Register = () => {
         className={cn('max-w-3xl w-full mx-auto', 'bg-white rounded-md p-8')}
       >
         <div className="flex flex-col items-center justify-center gap-3">
-          <img src={codevlogo} alt="Codev logo" className="w-12 h-12" />
-          <h1 className="text-3xl font-title font-bold text-center mb-6">
+          <img
+            src={codevlogo}
+            alt="Codev logo"
+            className="w-8 h-8 md:w-12 md:h-12"
+          />
+          <h1 className="text-xl md:text-3xl font-title font-bold text-center mb-6">
             Co-Dev Register
           </h1>
         </div>
