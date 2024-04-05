@@ -12,7 +12,7 @@ const Navbar = ({ classname, ...rest }: NavbarProps) => {
   return (
     <nav className={cn('bg-white', classname)} {...rest}>
       <Container>
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-4 px-4 lg:px-0">
           <div className="flex items-center gap-3">
             <img src={codevlogo} alt="Codev logo" className="w-8 h-8" />
             <Link to="/" className="text-xl font-title font-bold">
