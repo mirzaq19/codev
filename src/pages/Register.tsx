@@ -54,7 +54,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center max-w-md mx-auto min-h-[92vh] px-4 md:px-0">
+    <div className="flex flex-col justify-center items-center max-w-md mx-auto min-h-main px-4 md:px-0">
       <div
         className={cn('max-w-3xl w-full mx-auto', 'bg-white rounded-md p-8')}
       >
