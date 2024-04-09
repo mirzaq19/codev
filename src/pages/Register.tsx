@@ -1,6 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -11,7 +12,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
 
@@ -38,7 +38,7 @@ const formSchema = z
     path: ['passwordConfirmation'],
   });
 
-const Register = () => {
+function Register() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -147,6 +147,6 @@ const Register = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Register;

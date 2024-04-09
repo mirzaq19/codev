@@ -5,7 +5,7 @@ import Container from '@/components/layout/Container';
 import Navbar from '@/components/layout/Navbar';
 import Register from '@/pages/Register';
 
-const App = () => {
+function App() {
   return (
     <div className="bg-gray-100">
       <Navbar className="sticky top-0 bg-white" />
@@ -18,6 +18,6 @@ const App = () => {
       </Container>
     </div>
   );
-};
+}
 
 export default App;

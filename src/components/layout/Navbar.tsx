@@ -1,6 +1,6 @@
+import { Link } from 'react-router-dom';
 import Container from '@/components/layout/Container';
 import { cn } from '@/lib/utils';
-import { Link } from 'react-router-dom';
 import codevlogo from '@/assets/logo/codev-logo.svg';
 import { Button } from '../ui/button';
 
@@ -8,7 +8,7 @@ type NavbarProps = {
   classname?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-const Navbar = ({ classname, ...rest }: NavbarProps) => {
+function Navbar({ classname, ...rest }: NavbarProps) {
   return (
     <nav className={cn('bg-white', classname)} {...rest}>
       <Container>
@@ -39,6 +39,6 @@ const Navbar = ({ classname, ...rest }: NavbarProps) => {
       </Container>
     </nav>
   );
-};
+}
 
 export default Navbar;
