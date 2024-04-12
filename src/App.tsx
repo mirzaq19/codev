@@ -8,7 +8,7 @@ import Register from '@/pages/Register';
 function App() {
   return (
     <div className="bg-gray-100">
-      <Navbar className="sticky top-0 bg-white" />
+      <Navbar />
       <Container>
         <Routes>
           <Route path="/login" element={<Login />} />

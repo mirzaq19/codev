@@ -10,12 +10,18 @@ type NavbarProps = {
 
 function Navbar({ classname, ...rest }: NavbarProps) {
   return (
-    <nav className={cn('bg-white', classname)} {...rest}>
+    <nav
+      className={cn(
+        'bg-white sticky top-0 z-10 border-b border-gray-200',
+        classname,
+      )}
+      {...rest}
+    >
       <Container>
         <div className="flex justify-between items-center py-4 px-4 lg:px-0">
           <div className="flex items-center gap-3">
             <img src={codevlogo} alt="Codev logo" className="w-8 h-8" />
-            <Link to="/" className="text-xl font-title font-bold">
+            <Link to="/" className="text-lg md:text-xl font-title font-bold">
               Co-Dev
             </Link>
           </div>
