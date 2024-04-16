@@ -1,4 +1,5 @@
 import { showLoading, hideLoading } from 'react-redux-loading-bar';
+import toast from 'react-hot-toast';
 import { createSlice } from '@reduxjs/toolkit';
 import authApi from '@/services/apis/auth-api';
 import { RegisterRequest } from '@/types/auth';
@@ -18,11 +19,14 @@ const initialState: AuthState = {
 
 // prettier-ignore
 export const asyncRegisterUser = ({ name, email, password }: RegisterRequest) => async (dispatch: AppDispatch) => {
+    const toastId = toast.loading('Registering...');
     dispatch(showLoading());
     try {
-      await authApi.register({ name, email, password });
+      await authApi.register({ name, email, password }); // Assign the value to 'user'
+      toast.success('Registration successful', { id: toastId });
     } catch (error) {
       console.log((error as Error).message);
+      toast.error(`Registration failed: ${(error as Error).message}`, { id: toastId});
     }
     dispatch(hideLoading());
   };
