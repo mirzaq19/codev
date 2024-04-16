@@ -20,5 +20,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/require-default-props': 'off',
     'no-console': 'off',
+    'no-param-reassign': 'off',
   },
 };
