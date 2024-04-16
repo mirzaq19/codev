@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -43,6 +43,7 @@ const formSchema = z
   });
 
 function Register() {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
 
@@ -59,9 +60,9 @@ function Register() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     const { name, email, password } = values;
-    await dispatch(asyncRegisterUser({ name, email, password }));
-    console.log('submitted', values);
+    const status = await dispatch(asyncRegisterUser({ name, email, password }));
     setLoading(false);
+    if (status) navigate('/login');
   };
 
   return (

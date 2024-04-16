@@ -19,6 +19,7 @@ const initialState: AuthState = {
 
 // prettier-ignore
 export const asyncRegisterUser = ({ name, email, password }: RegisterRequest) => async (dispatch: AppDispatch) => {
+    let status = true;
     const toastId = toast.loading('Registering...');
     dispatch(showLoading());
     try {
@@ -27,8 +28,10 @@ export const asyncRegisterUser = ({ name, email, password }: RegisterRequest) =>
     } catch (error) {
       console.log((error as Error).message);
       toast.error(`Registration failed: ${(error as Error).message}`, { id: toastId});
+      status = false
     }
     dispatch(hideLoading());
+    return status;
   };
 
 export const authSlice = createSlice({
