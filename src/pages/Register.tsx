@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
-import { asyncRegisterUser } from '@/services/states/auth-slices';
+import { asyncRegisterUser } from '@/services/states/auth-slice';
 import { useAppDispatch } from '@/app/hooks';
 
 const formSchema = z

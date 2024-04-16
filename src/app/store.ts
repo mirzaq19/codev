@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { loadingBarReducer } from 'react-redux-loading-bar';
-import authReducer from '@/services/states/auth-slices';
+import authReducer from '@/services/states/auth-slice';
 
 export const store = configureStore({
   reducer: {

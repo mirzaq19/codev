@@ -6,7 +6,7 @@ import {
   populate,
   logout,
   stopLoading,
-} from '@/services/states/auth-slices';
+} from '@/services/states/auth-slice';
 
 const useLogin = () => {
   const dispatch = useAppDispatch();
