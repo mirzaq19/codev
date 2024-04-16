@@ -10,60 +10,67 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import type { CardProps } from '@/types/card';
 import { cn } from '@/lib/utils';
+import { Thread } from '@/types/thread';
+import { User } from '@/types/auth';
 
-type CardListProps = {
-  cards: CardProps[];
+export type ThreadWithOwner = Thread & { owner: User };
+
+type ThreadListProps = {
+  threads: ThreadWithOwner[];
   className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-function CardList({ cards, className, ...rest }: CardListProps) {
+function ThreadList({ threads, className, ...rest }: ThreadListProps) {
   return (
     <div className={cn('space-y-2', className)} {...rest}>
-      {cards.map((card: CardProps) => (
-        <Card key={card.id}>
+      {threads.map((thread: ThreadWithOwner) => (
+        <Card key={thread.id}>
           <CardHeader className="pb-2">
             <div className="flex gap-3">
               <Avatar>
-                <AvatarImage src="https://github.com/unknown.png" />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarImage src={thread.owner.avatar} />
+                <AvatarFallback>{thread.owner.name[0]}</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="text-base md:text-lg font-bold">John Doe</h3>
-                <span className="text-gray-500 text-sm">john@gmail.com</span>
+                <h3 className="text-base md:text-lg font-bold">
+                  {thread.owner.name}
+                </h3>
+                <span className="text-gray-500 text-sm">
+                  {thread.owner.email}
+                </span>
               </div>
             </div>
             <div className="flex flex-col gap-2 md:flex-row justify-between">
               <div>
                 <Link to="/">
                   <CardTitle className="hover:underline">
-                    {card.title}
+                    {thread.title}
                   </CardTitle>
                 </Link>
                 <div className="bg-green-50 text-gray-600 rounded mt-2 w-fit px-2 hover:underline">
-                  #{card.category}
+                  #{thread.category}
                 </div>
               </div>
-              <CardDescription>{card.createdAt}</CardDescription>
+              <CardDescription>{thread.createdAt}</CardDescription>
             </div>
           </CardHeader>
           <CardContent className="pb-2">
-            <p>{card.body}</p>
+            <p>{thread.body}</p>
           </CardContent>
           <CardFooter className="flex justify-between">
             <div className="md:space-x-2">
               <Button variant="ghost" className="space-x-2">
                 <ThumbsUp className="w-5 h-5" />
                 <p className="text-sm">
-                  {card.upVotesBy.length}{' '}
+                  {thread.upVotesBy.length}{' '}
                   <span className="hidden md:inline">Upvotes</span>
                 </p>
               </Button>
               <Button variant="ghost" className="space-x-2">
                 <ThumbsDown className="w-5 h-5" />
                 <p>
-                  {card.downVotesBy.length}{' '}
+                  {thread.downVotesBy.length}{' '}
                   <span className="hidden md:inline">Downvotes</span>
                 </p>
               </Button>
@@ -71,7 +78,7 @@ function CardList({ cards, className, ...rest }: CardListProps) {
             <Button variant="ghost" className="space-x-2">
               <MessageCircleMore className="w-5 h-5" />
               <p>
-                {card.totalComments}{' '}
+                {thread.totalComments}{' '}
                 <span className="hidden md:inline">Comments</span>
               </p>
             </Button>
@@ -82,4 +89,4 @@ function CardList({ cards, className, ...rest }: CardListProps) {
   );
 }
 
-export default CardList;
+export default ThreadList;
