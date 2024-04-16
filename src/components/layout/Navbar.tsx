@@ -13,12 +13,16 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAppSelector } from '@/app/hooks';
+import { Skeleton } from '@/components/ui/skeleton';
 
 type NavbarProps = {
   classname?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
 function Navbar({ classname, ...rest }: NavbarProps) {
+  const authState = useAppSelector((state) => state.auth);
+
   return (
     <nav
       className={cn(
@@ -37,39 +41,54 @@ function Navbar({ classname, ...rest }: NavbarProps) {
           </div>
           <div>
             <ul className="flex items-center space-x-2">
-              <li>
-                <Link to="/login">
-                  <Button size="sm">Login</Button>
-                </Link>
-              </li>
-              <li>
-                <Link to="/register">
-                  <Button size="sm" variant="outline">
-                    Register
-                  </Button>
-                </Link>
-              </li>
-              <li className="flex items-center">
-                <DropdownMenu modal={false}>
-                  <DropdownMenuTrigger>
-                    <Avatar>
-                      <AvatarImage src="https://github.com/unknown.png" />
-                      <AvatarFallback>CN</AvatarFallback>
-                    </Avatar>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>
-                      <p>John Doe</p>
-                      <p className="text-gray-500 text-xs">johndoe@gmail.com</p>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem className="space-x-1">
-                      <LogOut className="h-4 w-4 text-gray-600" />
-                      <span>Logout</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </li>
+              {!authState.authenticated && (
+                <>
+                  <li>
+                    <Link to="/login">
+                      <Button size="sm">Login</Button>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="/register">
+                      <Button size="sm" variant="outline">
+                        Register
+                      </Button>
+                    </Link>
+                  </li>
+                </>
+              )}
+              {authState.authenticated && !authState.loading && (
+                <li className="flex items-center">
+                  <DropdownMenu modal={false}>
+                    <DropdownMenuTrigger>
+                      <Avatar>
+                        <AvatarImage src={authState.user?.avatar} />
+                        <AvatarFallback>
+                          {authState.user?.name[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>
+                        <p>{authState.user?.name}</p>
+                        <p className="text-gray-500 text-xs">
+                          {authState.user?.email}
+                        </p>
+                      </DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="space-x-1">
+                        <LogOut className="h-4 w-4 text-gray-600" />
+                        <span>Logout</span>
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </li>
+              )}
+              {authState.authenticated && authState.loading && (
+                <li className="flex items-center">
+                  <Skeleton className="h-12 w-12 rounded-full" />
+                </li>
+              )}
             </ul>
           </div>
         </div>
