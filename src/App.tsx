@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Login from '@/pages/Login';
@@ -6,8 +7,19 @@ import Container from '@/components/layout/Container';
 import Navbar from '@/components/layout/Navbar';
 import Register from '@/pages/Register';
 import LoadingProgress from '@/components/LoadingProgress';
+import useLogin from '@/hooks/useLogin';
 
 function App() {
+  const { loginDispatch } = useLogin();
+
+  useEffect(() => {
+    loginDispatch({
+      errorAction: (error) => {
+        console.log('error action', error);
+      },
+    });
+  }, []);
+
   return (
     <>
       <LoadingProgress />
