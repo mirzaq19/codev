@@ -1,4 +1,5 @@
-import { RegisterRequest } from '@/types/auth';
+import { LoginRequest, RegisterRequest } from '@/types/auth';
+import fetchWithAuth from '@/services/apis/auth-fetcher';
 
 const BASEURL = import.meta.env.VITE_BASEURL;
 
@@ -36,9 +37,56 @@ async function register({ name, email, password }: RegisterRequest) {
   return user;
 }
 
+async function login({ email, password }: LoginRequest) {
+  const response = await fetch(`${BASEURL}/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { token },
+  } = responseJson;
+
+  return token;
+}
+
+async function getOwnProfile() {
+  const response = await fetchWithAuth(`${BASEURL}/users/me`);
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { user },
+  } = responseJson;
+
+  return user;
+}
+
 export default {
   getAccessToken,
   putAccessToken,
   removeAccessToken,
   register,
+  login,
+  getOwnProfile,
 };

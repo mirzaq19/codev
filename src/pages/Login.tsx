@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -14,6 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
+import { asyncLoginUser } from '@/services/states/auth-slices';
+import { useAppDispatch } from '@/app/hooks';
 
 const formSchema = z.object({
   email: z
@@ -30,6 +34,10 @@ const formSchema = z.object({
 });
 
 function Login() {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,8 +46,12 @@ function Login() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    const { email, password } = values;
+    const status = await dispatch(asyncLoginUser({ email, password }));
+    setLoading(false);
+    if (status) navigate('/');
   };
 
   return (
@@ -97,8 +109,9 @@ function Login() {
                 Register
               </Link>
             </p>
-            <Button className="w-full" type="submit">
-              Login
+            <Button disabled={loading} className="w-full" type="submit">
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              <span>Login</span>
             </Button>
           </form>
         </Form>

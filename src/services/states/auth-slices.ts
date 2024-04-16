@@ -2,12 +2,12 @@ import { showLoading, hideLoading } from 'react-redux-loading-bar';
 import toast from 'react-hot-toast';
 import { createSlice } from '@reduxjs/toolkit';
 import authApi from '@/services/apis/auth-api';
-import { RegisterRequest } from '@/types/auth';
+import { LoginRequest, RegisterRequest, User } from '@/types/auth';
 import { AppDispatch } from '@/app/store';
 
 export interface AuthState {
   loading: boolean;
-  user: any;
+  user: User | null;
   authenticated: boolean;
 }
 
@@ -16,23 +16,6 @@ const initialState: AuthState = {
   user: null,
   authenticated: !!authApi.getAccessToken(),
 };
-
-// prettier-ignore
-export const asyncRegisterUser = ({ name, email, password }: RegisterRequest) => async (dispatch: AppDispatch) => {
-    let status = true;
-    const toastId = toast.loading('Registering...');
-    dispatch(showLoading());
-    try {
-      await authApi.register({ name, email, password }); // Assign the value to 'user'
-      toast.success('Registration successful', { id: toastId });
-    } catch (error) {
-      console.log((error as Error).message);
-      toast.error(`Registration failed: ${(error as Error).message}`, { id: toastId});
-      status = false
-    }
-    dispatch(hideLoading());
-    return status;
-  };
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -54,6 +37,46 @@ export const authSlice = createSlice({
     },
   },
 });
+
+// prettier-ignore
+export const asyncRegisterUser = ({ name, email, password }: RegisterRequest) => async (dispatch: AppDispatch) => {
+    let status = true;
+    const toastId = toast.loading('Registering...');
+    dispatch(showLoading());
+    try {
+      await authApi.register({ name, email, password });
+      toast.success('Registration successful', { id: toastId });
+    } catch (error) {
+      console.log((error as Error).message);
+      toast.error(`Registration failed: ${(error as Error).message}`, { id: toastId});
+      status = false
+    }
+    dispatch(hideLoading());
+    return status;
+  };
+
+// prettier-ignore
+export const asyncLoginUser = ({ email, password }: LoginRequest) => async (dispatch: AppDispatch) => {
+  const { login, populate, stopLoading } = authSlice.actions;
+  let status = true;
+  const toastId = toast.loading('Loggin in...');
+  dispatch(showLoading());
+  try {
+    const token = await authApi.login({ email, password });
+    authApi.putAccessToken(token);
+    dispatch(login());
+    const user = await authApi.getOwnProfile();
+    dispatch(populate(user));
+    dispatch(stopLoading());
+    toast.success('Login successful', { id: toastId });
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Login failed: ${(error as Error).message}`, { id: toastId});
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
+};
 
 export const { login, populate, logout, stopLoading } = authSlice.actions;
 
