@@ -4,19 +4,23 @@ import Home from '@/pages/Home';
 import Container from '@/components/layout/Container';
 import Navbar from '@/components/layout/Navbar';
 import Register from '@/pages/Register';
+import LoadingProgress from '@/components/LoadingProgress';
 
 function App() {
   return (
-    <div className="bg-gray-100">
-      <Navbar />
-      <Container>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/" element={<Home />} />
-        </Routes>
-      </Container>
-    </div>
+    <>
+      <LoadingProgress />
+      <div className="bg-gray-100">
+        <Navbar />
+        <Container>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </Container>
+      </div>
+    </>
   );
 }
 

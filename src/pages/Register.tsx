@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { Loader2 } from 'lucide-react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -14,6 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
+import { asyncRegisterUser } from '@/services/states/auth-slices';
+import { useAppDispatch } from '@/app/hooks';
 
 const formSchema = z
   .object({
@@ -26,11 +30,11 @@ const formSchema = z
         message: 'Email must be at least 5 characters.',
       })
       .email({ message: 'Please enter a valid email address' }),
-    password: z.string().min(4, {
-      message: 'Password must be at least 4 characters.',
+    password: z.string().min(6, {
+      message: 'Password must be at least 6 characters.',
     }),
-    passwordConfirmation: z.string().min(4, {
-      message: 'Password confirmation must be at least 4 characters.',
+    passwordConfirmation: z.string().min(6, {
+      message: 'Password confirmation must be at least 6 characters.',
     }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
@@ -39,6 +43,9 @@ const formSchema = z
   });
 
 function Register() {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useAppDispatch();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,8 +56,12 @@ function Register() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+    const { name, email, password } = values;
+    await dispatch(asyncRegisterUser({ name, email, password }));
+    console.log('submitted', values);
+    setLoading(false);
   };
 
   return (
@@ -139,7 +150,8 @@ function Register() {
                 Login
               </Link>
             </p>
-            <Button className="w-full" type="submit">
+            <Button disabled={loading} className="w-full" type="submit">
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Register
             </Button>
           </form>
