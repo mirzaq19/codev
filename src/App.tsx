@@ -15,7 +15,7 @@ function App() {
   useEffect(() => {
     loginDispatch({
       errorAction: (error) => {
-        console.log('error action', error);
+        console.log('error action', error.message);
       },
     });
   }, []);
