@@ -1,11 +1,14 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import ThreadList, { ThreadWithOwner } from '@/components/layout/ThreadList';
 import CategoryList from '@/components/layout/CategoryList';
 import { asyncPopulateUsersAndThreads } from '@/services/states/share-thunk';
+import { Skeleton } from '@/components/ui/skeleton';
+import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 
 function Home() {
+  const [loading, setLoading] = useState(true);
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { threads } = useAppSelector((state) => state.thread);
@@ -14,7 +17,11 @@ function Home() {
   const activeCategory = searchParams.get('category');
 
   useEffect(() => {
-    dispatch(asyncPopulateUsersAndThreads());
+    const fetchUsersAndThreads = async () => {
+      await dispatch(asyncPopulateUsersAndThreads());
+      setLoading(false);
+    };
+    fetchUsersAndThreads();
   }, [activeCategory]);
 
   const categories = useMemo(
@@ -41,8 +48,25 @@ function Home() {
   return (
     <div className="min-h-main mt-4 px-4 lg:px-0">
       <h1 className="mb-4">Home</h1>
-      <CategoryList activeCategory={activeCategory} categories={categories} />
-      <ThreadList threads={threadList} />
+      {loading && (
+        <>
+          <div className="flex gap-2">
+            <Skeleton className="h-8 w-24 bg-slate-300" />
+            <Skeleton className="h-8 w-24 bg-slate-300" />
+            <Skeleton className="h-8 w-24 bg-slate-300" />
+          </div>
+          <ThreadSkeleton className="mt-4" />
+        </>
+      )}
+      {!loading && (
+        <>
+          <CategoryList
+            activeCategory={activeCategory}
+            categories={categories}
+          />
+          <ThreadList threads={threadList} />
+        </>
+      )}
     </div>
   );
 }
