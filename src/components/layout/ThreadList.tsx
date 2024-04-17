@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { MessageCircleMore, ThumbsDown, ThumbsUp } from 'lucide-react';
+import parse from 'html-react-parser';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -44,7 +45,7 @@ function ThreadList({ threads, className, ...rest }: ThreadListProps) {
             <div className="flex flex-col gap-2 md:flex-row justify-between">
               <div>
                 <Link to="/">
-                  <CardTitle className="hover:underline">
+                  <CardTitle className="line-clamp-2 hover:underline">
                     {thread.title}
                   </CardTitle>
                 </Link>
@@ -55,8 +56,8 @@ function ThreadList({ threads, className, ...rest }: ThreadListProps) {
               <CardDescription>{timeDiff(thread.createdAt)}</CardDescription>
             </div>
           </CardHeader>
-          <CardContent className="pb-2">
-            <p>{thread.body}</p>
+          <CardContent className="line-clamp-4 leading-snug break-words">
+            <div>{parse(thread.body)}</div>
           </CardContent>
           <CardFooter className="flex justify-between">
             <div className="md:space-x-2">
