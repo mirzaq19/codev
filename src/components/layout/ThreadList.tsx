@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { cn, timeDiff } from '@/lib/utils';
 import { Thread } from '@/types/thread';
 import { User } from '@/types/auth';
 
@@ -52,7 +52,7 @@ function ThreadList({ threads, className, ...rest }: ThreadListProps) {
                   #{thread.category}
                 </div>
               </div>
-              <CardDescription>{thread.createdAt}</CardDescription>
+              <CardDescription>{timeDiff(thread.createdAt)}</CardDescription>
             </div>
           </CardHeader>
           <CardContent className="pb-2">
