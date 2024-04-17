@@ -15,7 +15,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
-import { logout } from '@/services/states/auth-slice';
+import { asyncLogoutUser } from '@/services/states/auth-slice';
 
 type NavbarProps = {
   classname?: string;
@@ -26,7 +26,7 @@ function Navbar({ classname, ...rest }: NavbarProps) {
   const dispatch = useAppDispatch();
 
   const logoutHandler = () => {
-    dispatch(logout());
+    dispatch(asyncLogoutUser());
   };
 
   return (

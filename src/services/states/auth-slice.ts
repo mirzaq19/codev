@@ -78,6 +78,20 @@ export const asyncLoginUser = ({ email, password }: LoginRequest) => async (disp
   return status;
 };
 
+export const asyncLogoutUser = () => async (dispatch: AppDispatch) => {
+  const { logout } = authSlice.actions;
+  dispatch(showLoading());
+  try {
+    authApi.removeAccessToken();
+    dispatch(logout());
+    toast.success('Logout successful');
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Logout failed: ${(error as Error).message}`);
+  }
+  dispatch(hideLoading());
+};
+
 export const { login, populate, logout, stopLoading } = authSlice.actions;
 
 export default authSlice.reducer;
