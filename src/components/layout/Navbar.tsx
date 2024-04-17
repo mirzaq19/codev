@@ -13,8 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
+import { logout } from '@/services/states/auth-slice';
 
 type NavbarProps = {
   classname?: string;
@@ -22,6 +23,11 @@ type NavbarProps = {
 
 function Navbar({ classname, ...rest }: NavbarProps) {
   const authState = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <nav
@@ -76,7 +82,10 @@ function Navbar({ classname, ...rest }: NavbarProps) {
                         </p>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem className="space-x-1">
+                      <DropdownMenuItem
+                        className="space-x-1 cursor-pointer"
+                        onClick={logoutHandler}
+                      >
                         <LogOut className="h-4 w-4 text-gray-600" />
                         <span>Logout</span>
                       </DropdownMenuItem>
