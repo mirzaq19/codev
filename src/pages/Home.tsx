@@ -61,10 +61,12 @@ function Home() {
       )}
       {!loading && (
         <>
+          <h3 className=" mb-4">Categories</h3>
           <CategoryList
             activeCategory={activeCategory}
             categories={categories}
           />
+          <h3 className=" mb-4">Threads</h3>
           <ThreadList threads={threadList} />
         </>
       )}
