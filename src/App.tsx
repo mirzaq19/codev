@@ -8,6 +8,7 @@ import Navbar from '@/components/layout/Navbar';
 import Register from '@/pages/Register';
 import LoadingProgress from '@/components/LoadingProgress';
 import useLogin from '@/hooks/useLogin';
+import ScrollToTop from '@/components/ScrollToTop';
 
 function App() {
   const { loginDispatch } = useLogin();
@@ -34,6 +35,7 @@ function App() {
           <Toaster />
         </Container>
       </div>
+      <ScrollToTop />
     </>
   );
 }
