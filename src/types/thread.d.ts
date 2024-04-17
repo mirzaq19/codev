@@ -1,4 +1,5 @@
 import { User } from '@/types/auth';
+import { Comment } from '@/types/comment';
 
 export type Thread = {
   id: string;
@@ -13,6 +14,10 @@ export type Thread = {
 };
 
 export type ThreadWithOwner = Thread & { owner: User };
+
+export type DetailThread = Omit<Thread, 'ownerId'> & {
+  owner: Omit<User, 'email'>;
+} & { comments: Comment[] };
 
 export type VoteRequest = {
   threadId: string;

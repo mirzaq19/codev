@@ -1,19 +1,18 @@
-import parse from 'html-react-parser';
-import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
 import { MessageCircleMore, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import toast from 'react-hot-toast';
+import parse from 'html-react-parser';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { timeDiff } from '@/lib/utils';
-import { ThreadWithOwner } from '@/types/thread';
+import { DetailThread } from '@/types/thread';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import {
   asyncDownVotes,
@@ -21,12 +20,16 @@ import {
   asyncUpVotes,
 } from '@/services/states/thread-slice';
 
-type ThreadItemProps = {
-  thread: ThreadWithOwner;
+type ThreadDetailItemProps = {
+  thread: DetailThread;
   className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
+function ThreadDetailItem({
+  thread,
+  className,
+  ...rest
+}: ThreadDetailItemProps) {
   const { user, authenticated } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const upvoted = user?.id && thread.upVotesBy.includes(user.id);
@@ -75,7 +78,7 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
     <div className={className} {...rest}>
       <Card key={thread.id}>
         <CardHeader className="pb-2">
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <Avatar>
               <AvatarImage src={thread.owner.avatar} />
               <AvatarFallback>{thread.owner.name[0]}</AvatarFallback>
@@ -84,26 +87,21 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
               <h3 className="text-base md:text-lg font-bold">
                 {thread.owner.name}
               </h3>
-              <span className="text-gray-500 text-sm">
-                {thread.owner.email}
-              </span>
+              <p className="text-gray-500 text-xs">
+                Posted{' '}
+                <span className="font-bold">{timeDiff(thread.createdAt)}</span>
+              </p>
             </div>
           </div>
-          <div className="flex flex-col gap-2 md:flex-row justify-between">
-            <div>
-              <Link to={`/thread/${thread.id}`}>
-                <CardTitle className="line-clamp-2 hover:underline">
-                  {thread.title}
-                </CardTitle>
-              </Link>
-              <div className="bg-green-50 text-gray-600 rounded mt-2 w-fit px-2 hover:underline">
-                #{thread.category}
-              </div>
-            </div>
-            <CardDescription>{timeDiff(thread.createdAt)}</CardDescription>
-          </div>
+
+          <CardTitle className="space-x-2">
+            <span>{thread.title}</span>
+            <span className="bg-green-100 text-sm font-normal leading-10 text-gray-600 rounded mt-2 h-fit w-fit px-2 py-1 hover:underline">
+              #{thread.category}
+            </span>
+          </CardTitle>
         </CardHeader>
-        <CardContent className="line-clamp-4 leading-snug break-words">
+        <CardContent>
           <div>{parse(thread.body)}</div>
         </CardContent>
         <CardFooter className="flex justify-between">
@@ -131,11 +129,7 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
               </p>
             </Button>
           </div>
-          <Button
-            to={`/thread/${thread.id}`}
-            variant="ghost"
-            className="space-x-2"
-          >
+          <Button variant="ghost" className="space-x-2">
             <MessageCircleMore className="w-5 h-5" />
             <p>
               {thread.totalComments}{' '}
@@ -148,4 +142,4 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
   );
 }
 
-export default ThreadItem;
+export default ThreadDetailItem;

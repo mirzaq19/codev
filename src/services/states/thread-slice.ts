@@ -1,16 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import toast from 'react-hot-toast';
-import { Thread, VoteRequest } from '@/types/thread';
+import { DetailThread, Thread, VoteRequest } from '@/types/thread';
 import { AppDispatch } from '@/app/store';
 import threadApi from '@/services/apis/thread-api';
 
 export interface ThreadState {
   threads: Thread[];
+  detailThread: DetailThread | null;
 }
 
 const initialState: ThreadState = {
   threads: [],
+  detailThread: null,
 };
 
 export const threadSlice = createSlice({
@@ -20,12 +22,20 @@ export const threadSlice = createSlice({
     setThreads: (state, action: PayloadAction<Thread[]>) => {
       state.threads = action.payload;
     },
+    setDetailThread: (state, action: PayloadAction<DetailThread>) => {
+      state.detailThread = action.payload;
+    },
     upVote: (state, action: PayloadAction<VoteRequest>) => {
       const thread = state.threads.find(
         (t) => t.id === action.payload.threadId,
       );
       if (thread) {
         thread.upVotesBy.push(action.payload.userId);
+      }
+
+      const { detailThread } = state;
+      if (detailThread && detailThread.id === action.payload.threadId) {
+        detailThread.upVotesBy.push(action.payload.userId);
       }
     },
     downVote: (state, action: PayloadAction<VoteRequest>) => {
@@ -34,6 +44,11 @@ export const threadSlice = createSlice({
       );
       if (thread) {
         thread.downVotesBy.push(action.payload.userId);
+      }
+
+      const { detailThread } = state;
+      if (detailThread && detailThread.id === action.payload.threadId) {
+        detailThread.downVotesBy.push(action.payload.userId);
       }
     },
     neutralizeVote: (state, action: PayloadAction<VoteRequest>) => {
@@ -45,6 +60,16 @@ export const threadSlice = createSlice({
           (id) => id !== action.payload.userId,
         );
         thread.downVotesBy = thread.downVotesBy.filter(
+          (id) => id !== action.payload.userId,
+        );
+      }
+
+      const { detailThread } = state;
+      if (detailThread && detailThread.id === action.payload.threadId) {
+        detailThread.upVotesBy = detailThread.upVotesBy.filter(
+          (id) => id !== action.payload.userId,
+        );
+        detailThread.downVotesBy = detailThread.downVotesBy.filter(
           (id) => id !== action.payload.userId,
         );
       }
@@ -102,6 +127,23 @@ export const asyncNeutralizeVotes = ({ threadId, userId }: VoteRequest) => async
   dispatch(hideLoading());
   return status;
 };
+
+// prettier-ignore
+export const asyncGetDetailThread = (threadId: string) => async (dispatch: AppDispatch) => {
+  const { setDetailThread } = threadSlice.actions;
+  let status = true;
+  dispatch(showLoading());
+  try {
+    const thread = await threadApi.getDetailThread( threadId );
+    dispatch(setDetailThread(thread));
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Get detail thread failed: ${(error as Error).message}`);
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
+}
 
 export const { setThreads, upVote, downVote, neutralizeVote } =
   threadSlice.actions;
