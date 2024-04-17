@@ -1,11 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import ThreadList, { ThreadWithOwner } from '@/components/layout/ThreadList';
+import ThreadList from '@/components/layout/ThreadList';
 import CategoryList from '@/components/layout/CategoryList';
 import { asyncPopulateUsersAndThreads } from '@/services/states/share-thunk';
 import { Skeleton } from '@/components/ui/skeleton';
 import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
+import { ThreadWithOwner } from '@/types/thread';
 
 function Home() {
   const [loading, setLoading] = useState(true);

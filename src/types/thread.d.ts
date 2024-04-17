@@ -1,3 +1,5 @@
+import { User } from '@/types/auth';
+
 export type Thread = {
   id: string;
   title: string;
@@ -9,3 +11,5 @@ export type Thread = {
   downVotesBy: string[];
   totalComments: number;
 };
+
+export type ThreadWithOwner = Thread & { owner: User };
