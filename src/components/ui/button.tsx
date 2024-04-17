@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link, LinkProps, To } from 'react-router-dom';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
@@ -32,17 +33,61 @@ const buttonVariants = cva(
   },
 );
 
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+// export interface ButtonProps
+//   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+//     VariantProps<typeof buttonVariants> {
+//   asChild?: boolean;
+//   to?: To;
+// }
+
+interface ButtonPropsBase extends VariantProps<typeof buttonVariants> {
+  className?: string;
   asChild?: boolean;
+  to?: To;
 }
+
+interface ButtonPropsWithTo extends ButtonPropsBase, LinkProps {
+  to: To;
+}
+
+interface ButtonPropsWithoutTo
+  extends ButtonPropsBase,
+    React.ButtonHTMLAttributes<HTMLButtonElement> {
+  to?: undefined;
+}
+
+type ButtonProps = ButtonPropsWithTo | ButtonPropsWithoutTo;
+
+// type ButtonProps = VariantProps<typeof buttonVariants> & {
+//   className?: string;
+//   children: React.ReactNode;
+//   asChild?: boolean;
+//   to?: To;
+// } & (
+//   | ({ to: To } & LinkProps)
+//   | ({
+//     to?: undefined;
+//   } & React.ButtonHTMLAttributes<HTMLButtonElement>)
+// );
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, asChild = false, ...props }, ref) => {
+    if (props.to) {
+      return (
+        <Link
+          className={cn(buttonVariants({ variant, size, className }))}
+          {...props}
+        >
+          {props.children}
+        </Link>
+      );
+    }
+
     const Comp = asChild ? Slot : 'button';
     return (
       <Comp
+        // @ts-ignore
+        type={props.type || 'button'}
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
