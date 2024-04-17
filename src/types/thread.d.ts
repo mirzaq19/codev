@@ -13,3 +13,8 @@ export type Thread = {
 };
 
 export type ThreadWithOwner = Thread & { owner: User };
+
+export type VoteRequest = {
+  threadId: string;
+  userId: string;
+};
