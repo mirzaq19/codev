@@ -31,7 +31,7 @@ function ThreadDetail() {
             <h2 className="text-xl font-bold my-4">
               Comments ({detailThread?.comments.length})
             </h2>
-            <div>
+            <div className="space-y-2">
               {detailThread?.comments.map((comment) => (
                 <CommentItem
                   key={comment.id}
