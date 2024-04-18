@@ -23,3 +23,9 @@ export type VoteRequest = {
   threadId: string;
   userId: string;
 };
+
+export type VoteCommentRequest = {
+  threadId: string;
+  commentId: string;
+  userId: string;
+};

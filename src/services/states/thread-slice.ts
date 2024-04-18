@@ -1,7 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import toast from 'react-hot-toast';
-import { DetailThread, Thread, VoteRequest } from '@/types/thread';
+import {
+  DetailThread,
+  Thread,
+  VoteCommentRequest,
+  VoteRequest,
+} from '@/types/thread';
 import { AppDispatch } from '@/app/store';
 import threadApi from '@/services/apis/thread-api';
 
@@ -74,6 +79,47 @@ export const threadSlice = createSlice({
         );
       }
     },
+    upVoteComment: (state, action: PayloadAction<VoteCommentRequest>) => {
+      const { detailThread } = state;
+      if (detailThread) {
+        const comment = detailThread.comments.find(
+          (c) => c.id === action.payload.commentId,
+        );
+        if (comment) {
+          comment.upVotesBy.push(action.payload.userId);
+        }
+      }
+    },
+    downVoteComment: (state, action: PayloadAction<VoteCommentRequest>) => {
+      const { detailThread } = state;
+      if (detailThread) {
+        const comment = detailThread.comments.find(
+          (c) => c.id === action.payload.commentId,
+        );
+        if (comment) {
+          comment.downVotesBy.push(action.payload.userId);
+        }
+      }
+    },
+    neutralizeVoteComment: (
+      state,
+      action: PayloadAction<VoteCommentRequest>,
+    ) => {
+      const { detailThread } = state;
+      if (detailThread) {
+        const comment = detailThread.comments.find(
+          (c) => c.id === action.payload.commentId,
+        );
+        if (comment) {
+          comment.upVotesBy = comment.upVotesBy.filter(
+            (id) => id !== action.payload.userId,
+          );
+          comment.downVotesBy = comment.downVotesBy.filter(
+            (id) => id !== action.payload.userId,
+          );
+        }
+      }
+    },
   },
 });
 
@@ -139,6 +185,57 @@ export const asyncGetDetailThread = (threadId: string) => async (dispatch: AppDi
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Get detail thread failed: ${(error as Error).message}`);
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
+}
+
+// prettier-ignore
+export const asyncUpVotesComment = ({ threadId, commentId, userId }: VoteCommentRequest) => async (dispatch: AppDispatch) => {
+  const { upVoteComment } = threadSlice.actions;
+  let status = true;
+  dispatch(showLoading());
+  try {
+    dispatch(upVoteComment({ threadId, commentId, userId }));
+    await threadApi.upVoteComment( threadId, commentId );
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Upvote comment failed: ${(error as Error).message}`);
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
+}
+
+// prettier-ignore
+export const asyncDownVotesComment = ({ threadId, commentId, userId }: VoteCommentRequest) => async (dispatch: AppDispatch) => {
+  const { downVoteComment } = threadSlice.actions;
+  let status = true;
+  dispatch(showLoading());
+  try {
+    dispatch(downVoteComment({ threadId, commentId, userId }));
+    await threadApi.downVoteComment( threadId, commentId );
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Downvote comment failed: ${(error as Error).message}`);
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
+}
+
+// prettier-ignore
+export const asyncNeutralizeVotesComment = ({ threadId, commentId, userId }: VoteCommentRequest) => async (dispatch: AppDispatch) => {
+  const { neutralizeVoteComment } = threadSlice.actions;
+  let status = true;
+  dispatch(showLoading());
+  try {
+    dispatch(neutralizeVoteComment({ threadId, commentId, userId }));
+    await threadApi.neutralizeVoteComment( threadId, commentId );
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Neutralize comment vote failed: ${(error as Error).message}`);
     status = false
   }
   dispatch(hideLoading());

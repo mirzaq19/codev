@@ -107,10 +107,82 @@ async function getDetailThread(threadId: string) {
   return detailThread;
 }
 
+async function upVoteComment(threadId: string, commentId: string) {
+  const response = await fetchWithAuth(
+    `${BASEURL}/threads/${threadId}/comments/${commentId}/up-vote`,
+    {
+      method: 'POST',
+    },
+  );
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { vote },
+  } = responseJson;
+
+  return vote;
+}
+
+async function downVoteComment(threadId: string, commentId: string) {
+  const response = await fetchWithAuth(
+    `${BASEURL}/threads/${threadId}/comments/${commentId}/down-vote`,
+    {
+      method: 'POST',
+    },
+  );
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { vote },
+  } = responseJson;
+
+  return vote;
+}
+
+async function neutralizeVoteComment(threadId: string, commentId: string) {
+  const response = await fetchWithAuth(
+    `${BASEURL}/threads/${threadId}/comments/${commentId}/neutral-vote`,
+    {
+      method: 'POST',
+    },
+  );
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { vote },
+  } = responseJson;
+
+  return vote;
+}
+
 export default {
   getAllThreads,
   upVoteThread,
   downVoteThread,
   neutralizeVote,
   getDetailThread,
+  upVoteComment,
+  downVoteComment,
+  neutralizeVoteComment,
 };

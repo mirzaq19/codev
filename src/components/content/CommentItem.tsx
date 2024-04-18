@@ -12,7 +12,12 @@ import {
 } from '@/components/ui/card';
 import { timeDiff } from '@/lib/utils';
 import { Comment } from '@/types/comment';
-import { useAppSelector } from '@/app/hooks';
+import { useAppDispatch, useAppSelector } from '@/app/hooks';
+import {
+  asyncDownVotesComment,
+  asyncNeutralizeVotesComment,
+  asyncUpVotesComment,
+} from '@/services/states/thread-slice';
 
 type CommentItemProps = {
   comment: Comment;
@@ -27,8 +32,10 @@ function CommentItem({
   ...rest
 }: CommentItemProps) {
   const { user, authenticated } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const upvoted = user?.id && comment.upVotesBy.includes(user.id);
   const downvoted = user?.id && comment.downVotesBy.includes(user.id);
+  const hasToNeutralize = upvoted || downvoted;
 
   const onUpVote = (commentId: string) => {
     if (!authenticated) {
@@ -41,10 +48,20 @@ function CommentItem({
           to upvote
         </span>
       ));
+      return;
     }
-    console.log(
-      `upvote commentId: ${commentId} in ThreadId: ${threadId}`,
-      upvoted,
+    if (hasToNeutralize) {
+      dispatch(
+        asyncNeutralizeVotesComment({
+          threadId,
+          commentId,
+          userId: user?.id as string,
+        }),
+      );
+      if (upvoted) return;
+    }
+    dispatch(
+      asyncUpVotesComment({ threadId, commentId, userId: user?.id as string }),
     );
   };
 
@@ -59,10 +76,24 @@ function CommentItem({
           to downvote
         </span>
       ));
+      return;
     }
-    console.log(
-      `downvote commentId: ${commentId} in ThreadId: ${threadId}`,
-      downvoted,
+    if (hasToNeutralize) {
+      dispatch(
+        asyncNeutralizeVotesComment({
+          threadId,
+          commentId,
+          userId: user?.id as string,
+        }),
+      );
+      if (downvoted) return;
+    }
+    dispatch(
+      asyncDownVotesComment({
+        threadId,
+        commentId,
+        userId: user?.id as string,
+      }),
     );
   };
 
