@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 import Container from '@/components/layout/Container';
 import { cn } from '@/lib/utils';
@@ -24,6 +24,7 @@ type NavbarProps = {
 function Navbar({ classname, ...rest }: NavbarProps) {
   const authState = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
 
   const logoutHandler = () => {
     dispatch(asyncLogoutUser());
@@ -43,6 +44,15 @@ function Navbar({ classname, ...rest }: NavbarProps) {
             <img src={codevlogo} alt="Codev logo" className="w-8 h-8" />
             <Link to="/" className="text-lg md:text-xl font-title font-bold">
               Co-Dev
+            </Link>
+            <Link to="/leaderboards">
+              <Button
+                variant="ghost"
+                size="sm"
+                className={`text-xs md:text-sm transition-all duration-300 hover:bg-blue-50 ${pathname === '/leaderboards' ? 'bg-blue-50' : ''}`}
+              >
+                Leaderboards
+              </Button>
             </Link>
           </div>
           <div>

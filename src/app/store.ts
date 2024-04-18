@@ -3,12 +3,14 @@ import { loadingBarReducer } from 'react-redux-loading-bar';
 import authReducer from '@/services/states/auth-slice';
 import threadReducer from '@/services/states/thread-slice';
 import userReducer from '@/services/states/user-slice';
+import leaderboardReducer from '@/services/states/leaderboard-slice';
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     thread: threadReducer,
     user: userReducer,
+    leaderboard: leaderboardReducer,
     loadingBar: loadingBarReducer,
   },
 });

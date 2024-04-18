@@ -10,6 +10,7 @@ import LoadingProgress from '@/components/LoadingProgress';
 import useLogin from '@/hooks/useLogin';
 import ScrollToTop from '@/components/ScrollToTop';
 import ThreadDetail from '@/pages/ThreadDetail';
+import Leaderboard from '@/pages/Leaderboard';
 
 function App() {
   const { loginDispatch } = useLogin();
@@ -33,6 +34,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/" element={<Home />} />
             <Route path="/thread/:id" element={<ThreadDetail />} />
+            <Route path="/leaderboards" element={<Leaderboard />} />
           </Routes>
           <Toaster />
         </Container>
