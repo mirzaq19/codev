@@ -15,7 +15,7 @@ export type Thread = {
 
 export type ThreadWithOwner = Thread & { owner: User };
 
-export type DetailThread = Omit<Thread, 'ownerId'> & {
+export type DetailThread = Omit<Thread, 'ownerId' | 'totalComments'> & {
   owner: Omit<User, 'email'>;
 } & { comments: Comment[] };
 

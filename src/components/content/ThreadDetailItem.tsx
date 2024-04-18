@@ -1,4 +1,4 @@
-import { MessageCircleMore, ThumbsDown, ThumbsUp } from 'lucide-react';
+import { ThumbsDown, ThumbsUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import parse from 'html-react-parser';
@@ -106,7 +106,7 @@ function ThreadDetailItem({
         <CardContent>
           <div>{parse(thread.body)}</div>
         </CardContent>
-        <CardFooter className="flex justify-between">
+        <CardFooter>
           <div className="md:space-x-2">
             <Button
               onClick={() => onUpVote(thread.id)}
@@ -131,13 +131,6 @@ function ThreadDetailItem({
               </p>
             </Button>
           </div>
-          <Button variant="ghost" className="space-x-2">
-            <MessageCircleMore className="w-5 h-5" />
-            <p>
-              {thread.totalComments}{' '}
-              <span className="hidden md:inline">Comments</span>
-            </p>
-          </Button>
         </CardFooter>
       </Card>
     </div>
