@@ -200,6 +200,33 @@ async function postNewThread(title: string, body: string, category?: string) {
   return thread;
 }
 
+async function postNewComment(threadId: string, content: string) {
+  const response = await fetchWithAuth(
+    `${BASEURL}/threads/${threadId}/comments`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ content }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { comment },
+  } = responseJson;
+
+  return comment;
+}
+
 export default {
   getAllThreads,
   upVoteThread,
@@ -210,4 +237,5 @@ export default {
   downVoteComment,
   neutralizeVoteComment,
   postNewThread,
+  postNewComment,
 };

@@ -8,6 +8,7 @@ import {
   VoteCommentRequest,
   VoteRequest,
 } from '@/types/thread';
+import { CommentAsyncRequest, CommentRequest } from '@/types/comment';
 import { AppDispatch } from '@/app/store';
 import threadApi from '@/services/apis/thread-api';
 
@@ -119,6 +120,12 @@ export const threadSlice = createSlice({
             (id) => id !== action.payload.userId,
           );
         }
+      }
+    },
+    addComment: (state, action: PayloadAction<CommentRequest>) => {
+      const { detailThread } = state;
+      if (detailThread && detailThread.id === action.payload.threadId) {
+        detailThread.comments.unshift(action.payload);
       }
     },
   },
@@ -262,6 +269,27 @@ export const asyncPostNewThread = ({title, body, category}: NewThreadRequest) =>
     status,
     newThread
   };
+}
+
+// prettier-ignore
+export const asyncPostNewComment = ({threadId, content}: CommentAsyncRequest) => async (dispatch: AppDispatch) => {
+  const { addComment } = threadSlice.actions;
+  let status = true;
+  let newComment
+  dispatch(showLoading());
+  const toastId = toast.loading('Posting new comment...');
+  try {
+    newComment = await threadApi.postNewComment( threadId, content );
+    newComment.threadId = threadId;
+    dispatch(addComment(newComment));
+    toast.success('Post new comment success', { id: toastId });
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Post new comment failed: ${(error as Error).message}`, { id: toastId });
+    status = false
+  }
+  dispatch(hideLoading());
+  return status;
 }
 
 export const { setThreads, upVote, downVote, neutralizeVote } =

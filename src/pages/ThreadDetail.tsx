@@ -6,6 +6,7 @@ import ThreadDetailItem from '@/components/content/ThreadDetailItem';
 import { DetailThread } from '@/types/thread';
 import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 import CommentItem from '@/components/content/CommentItem';
+import CommentBox from '@/components/content/CommentBox';
 
 function ThreadDetail() {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,7 @@ function ThreadDetail() {
       {!loading && (
         <>
           <ThreadDetailItem thread={detailThread as DetailThread} />
+          <CommentBox className="mt-4" />
           <div>
             <h2 className="text-xl font-bold my-4">
               Comments ({detailThread?.comments.length})

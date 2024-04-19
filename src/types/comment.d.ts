@@ -7,3 +7,9 @@ export type Comment = {
   upVotesBy: string[];
   downVotesBy: string[];
 } & { owner: Omit<User, 'email'> };
+
+export type CommentRequest = Comment & { threadId: string };
+export type CommentAsyncRequest = {
+  threadId: string;
+  content: string;
+};
