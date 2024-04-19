@@ -50,6 +50,7 @@ function CommentBox({ className, ...rest }: CommentBoxProps) {
       }),
     );
     setLoading(false);
+    form.reset();
   };
   return (
     <div className={cn('bg-white rounded-lg p-4', className)} {...rest}>
@@ -77,7 +78,7 @@ function CommentBox({ className, ...rest }: CommentBoxProps) {
           />
           <Button
             disabled={loading}
-            className={`w-full ${form.formState.isDirty ? 'block' : 'hidden'}`}
+            className={`w-full ${form.formState.isDirty ? 'inline-flex' : 'hidden'}`}
             type="submit"
           >
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
