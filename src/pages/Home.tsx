@@ -15,6 +15,7 @@ function Home() {
   const dispatch = useAppDispatch();
   const { threads } = useAppSelector((state) => state.thread);
   const { users } = useAppSelector((state) => state.user);
+  const { authenticated } = useAppSelector((state) => state.auth);
 
   const activeCategory = searchParams.get('category');
 
@@ -68,12 +69,14 @@ function Home() {
             categories={categories}
           />
           <h3 className=" mb-4">Threads</h3>
-          <Button
-            to="/new-thread"
-            className="fixed right-4 bottom-12 transition-all duration-200 hover:bottom-11 md:mb-4 md:static"
-          >
-            Create a new Thread
-          </Button>
+          {authenticated && (
+            <Button
+              to="/new-thread"
+              className="fixed right-4 bottom-12 transition-all duration-200 hover:bottom-11 md:mb-4 md:static"
+            >
+              Create a new Thread
+            </Button>
+          )}
           <ThreadList threads={threadList} />
         </>
       )}
