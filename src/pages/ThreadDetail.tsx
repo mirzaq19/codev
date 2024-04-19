@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { asyncGetDetailThread } from '@/services/states/thread-slice';
 import ThreadDetailItem from '@/components/content/ThreadDetailItem';
@@ -12,6 +12,7 @@ function ThreadDetail() {
   const [loading, setLoading] = useState(true);
   const { id } = useParams<{ id: string }>();
   const { detailThread } = useAppSelector((state) => state.thread);
+  const { authenticated } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -28,7 +29,18 @@ function ThreadDetail() {
       {!loading && (
         <>
           <ThreadDetailItem thread={detailThread as DetailThread} />
-          <CommentBox className="mt-4" />
+          {!authenticated && (
+            <div className="bg-white p-4 rounded-lg mt-4">
+              <p className="text-center text-slate-700">
+                Please{' '}
+                <Link className="hover:underline" to="/login">
+                  <b>login</b>
+                </Link>{' '}
+                to comment
+              </p>
+            </div>
+          )}
+          {authenticated && <CommentBox className="mt-4" />}
           <div>
             <h2 className="text-xl font-bold my-4">
               Comments ({detailThread?.comments.length})
