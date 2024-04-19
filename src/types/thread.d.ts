@@ -19,6 +19,12 @@ export type DetailThread = Omit<Thread, 'ownerId' | 'totalComments'> & {
   owner: Omit<User, 'email'>;
 } & { comments: Comment[] };
 
+export type NewThreadRequest = {
+  title: string;
+  body: string;
+  category?: string;
+};
+
 export type VoteRequest = {
   threadId: string;
   userId: string;

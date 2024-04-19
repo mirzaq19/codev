@@ -7,6 +7,7 @@ import { asyncPopulateUsersAndThreads } from '@/services/states/share-thunk';
 import { Skeleton } from '@/components/ui/skeleton';
 import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 import { ThreadWithOwner } from '@/types/thread';
+import { Button } from '@/components/ui/button';
 
 function Home() {
   const [loading, setLoading] = useState(true);
@@ -67,6 +68,12 @@ function Home() {
             categories={categories}
           />
           <h3 className=" mb-4">Threads</h3>
+          <Button
+            to="/new-thread"
+            className="fixed right-4 bottom-12 transition-all duration-200 hover:bottom-11 md:mb-4 md:static"
+          >
+            Create a new Thread
+          </Button>
           <ThreadList threads={threadList} />
         </>
       )}

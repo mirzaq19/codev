@@ -176,6 +176,30 @@ async function neutralizeVoteComment(threadId: string, commentId: string) {
   return vote;
 }
 
+async function postNewThread(title: string, body: string, category?: string) {
+  const response = await fetchWithAuth(`${BASEURL}/threads`, {
+    method: 'POST',
+    body: JSON.stringify({ title, body, category }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const responseJson = await response.json();
+
+  const { status, message } = responseJson;
+
+  if (status !== 'success') {
+    throw new Error(message);
+  }
+
+  const {
+    data: { thread },
+  } = responseJson;
+
+  return thread;
+}
+
 export default {
   getAllThreads,
   upVoteThread,
@@ -185,4 +209,5 @@ export default {
   upVoteComment,
   downVoteComment,
   neutralizeVoteComment,
+  postNewThread,
 };

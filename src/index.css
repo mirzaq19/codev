@@ -89,6 +89,10 @@
   body {
     @apply text-sm md:text-base;
   }
+
+  ul {
+    @apply list-disc pl-4;
+  }
   /* #endregion  /**======== Default Typography =========== */
 
   .min-h-main {
@@ -99,5 +103,31 @@
     position: sticky;
     top: 0;
     z-index: 999;
+  }
+
+  .prose
+    :where(code):not(
+      :where([class~='not-prose'], [class~='not-prose'] *)
+    ):before,
+  .prose
+    :where(code):not(
+      :where([class~='not-prose'], [class~='not-prose'] *)
+    ):after {
+    content: '`';
+  }
+
+  .prose
+    :where(blockquote):not(
+      :where([class~='not-prose'], [class~='not-prose'] *)
+    ) {
+    font-weight: 500;
+    font-style: italic;
+    color: var(--tw-prose-quotes);
+    border-left-width: 0.25rem;
+    border-left-color: var(--tw-prose-quote-borders);
+    quotes: '“' '”' '‘' '’';
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    padding-left: 1em;
   }
 }

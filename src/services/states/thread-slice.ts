@@ -3,6 +3,7 @@ import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import toast from 'react-hot-toast';
 import {
   DetailThread,
+  NewThreadRequest,
   Thread,
   VoteCommentRequest,
   VoteRequest,
@@ -240,6 +241,27 @@ export const asyncNeutralizeVotesComment = ({ threadId, commentId, userId }: Vot
   }
   dispatch(hideLoading());
   return status;
+}
+
+// prettier-ignore
+export const asyncPostNewThread = ({title, body, category}: NewThreadRequest) => async (dispatch: AppDispatch) => {
+  let status = true;
+  let newThread;
+  dispatch(showLoading());
+  const toastId = toast.loading('Posting new thread...');
+  try {
+    newThread = await threadApi.postNewThread( title, body, category );
+    toast.success('Post new thread success', { id: toastId });
+  } catch (error) {
+    console.log((error as Error).message);
+    toast.error(`Post new thread failed: ${(error as Error).message}`, { id: toastId });
+    status = false
+  }
+  dispatch(hideLoading());
+  return {
+    status,
+    newThread
+  };
 }
 
 export const { setThreads, upVote, downVote, neutralizeVote } =
