@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, Zap } from 'lucide-react';
 import Container from '@/components/layout/Container';
 import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
@@ -16,6 +16,12 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Skeleton } from '@/components/ui/skeleton';
 import { asyncLogoutUser } from '@/services/states/auth-slice';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 type NavbarProps = {
   classname?: string;
@@ -23,12 +29,16 @@ type NavbarProps = {
 
 function Navbar({ classname, ...rest }: NavbarProps) {
   const authState = useAppSelector((state) => state.auth);
+  const { leaderboards } = useAppSelector((state) => state.leaderboard);
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
 
   const logoutHandler = () => {
     dispatch(asyncLogoutUser());
   };
+
+  const getCurrentScore = () =>
+    leaderboards.find((l) => l.user.id === authState.user?.id)?.score;
 
   return (
     <nav
@@ -56,7 +66,7 @@ function Navbar({ classname, ...rest }: NavbarProps) {
             </Link>
           </div>
           <div>
-            <ul className="flex items-center space-x-2">
+            <ul className="flex items-center gap-4">
               {!authState.authenticated && (
                 <>
                   <li>
@@ -74,34 +84,60 @@ function Navbar({ classname, ...rest }: NavbarProps) {
                 </>
               )}
               {authState.authenticated && !authState.loading && (
-                <li className="flex items-center">
-                  <DropdownMenu modal={false}>
-                    <DropdownMenuTrigger>
-                      <Avatar>
-                        <AvatarImage src={authState.user?.avatar} />
-                        <AvatarFallback>
-                          {authState.user?.name[0]}
-                        </AvatarFallback>
-                      </Avatar>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuLabel>
-                        <p>{authState.user?.name}</p>
-                        <p className="text-gray-500 text-xs">
-                          {authState.user?.email}
-                        </p>
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        className="space-x-1 cursor-pointer"
-                        onClick={logoutHandler}
-                      >
-                        <LogOut className="h-4 w-4 text-gray-600" />
-                        <span>Logout</span>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </li>
+                <>
+                  <li className="">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className="flex items-center gap-1 px-2 cursor-auto"
+                          >
+                            <Zap
+                              className="w-5 text-zinc-900"
+                              fill="#ffea00"
+                              strokeWidth={1.2}
+                            />
+                            <span className="text-gray-700 font-semibold">
+                              {getCurrentScore() ?? 0}
+                            </span>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-xs">Leaderboard Score</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </li>
+                  <li className="flex items-center">
+                    <DropdownMenu modal={false}>
+                      <DropdownMenuTrigger>
+                        <Avatar>
+                          <AvatarImage src={authState.user?.avatar} />
+                          <AvatarFallback>
+                            {authState.user?.name[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>
+                          <p>{authState.user?.name}</p>
+                          <p className="text-gray-500 text-xs">
+                            {authState.user?.email}
+                          </p>
+                        </DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="space-x-1 cursor-pointer"
+                          onClick={logoutHandler}
+                        >
+                          <LogOut className="h-4 w-4 text-gray-600" />
+                          <span>Logout</span>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </li>
+                </>
               )}
               {authState.authenticated && authState.loading && (
                 <li className="flex items-center">

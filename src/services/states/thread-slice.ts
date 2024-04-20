@@ -11,6 +11,7 @@ import {
 import { CommentAsyncRequest, CommentRequest } from '@/types/comment';
 import { AppDispatch } from '@/app/store';
 import threadApi from '@/services/apis/thread-api';
+import { asyncGetLeaderboards } from './leaderboard-slice';
 
 export interface ThreadState {
   threads: Thread[];
@@ -139,6 +140,7 @@ export const asyncUpVotes = ({ threadId, userId }: VoteRequest) => async (dispat
   try {
     dispatch(upVote({ threadId, userId }));
     await threadApi.upVoteThread( threadId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Upvote failed: ${(error as Error).message}`);
@@ -156,6 +158,7 @@ export const asyncDownVotes = ({ threadId, userId }: VoteRequest) => async (disp
   try {
     dispatch(downVote({ threadId, userId }));
     await threadApi.downVoteThread( threadId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Downvote failed: ${(error as Error).message}`);
@@ -173,6 +176,7 @@ export const asyncNeutralizeVotes = ({ threadId, userId }: VoteRequest) => async
   try {
     dispatch(neutralizeVote({ threadId, userId }));
     await threadApi.neutralizeVote( threadId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Neutralize vote failed: ${(error as Error).message}`);
@@ -207,6 +211,7 @@ export const asyncUpVotesComment = ({ threadId, commentId, userId }: VoteComment
   try {
     dispatch(upVoteComment({ threadId, commentId, userId }));
     await threadApi.upVoteComment( threadId, commentId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Upvote comment failed: ${(error as Error).message}`);
@@ -224,6 +229,7 @@ export const asyncDownVotesComment = ({ threadId, commentId, userId }: VoteComme
   try {
     dispatch(downVoteComment({ threadId, commentId, userId }));
     await threadApi.downVoteComment( threadId, commentId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Downvote comment failed: ${(error as Error).message}`);
@@ -241,6 +247,7 @@ export const asyncNeutralizeVotesComment = ({ threadId, commentId, userId }: Vot
   try {
     dispatch(neutralizeVoteComment({ threadId, commentId, userId }));
     await threadApi.neutralizeVoteComment( threadId, commentId );
+    await dispatch(asyncGetLeaderboards())
   } catch (error) {
     console.log((error as Error).message);
     toast.error(`Neutralize comment vote failed: ${(error as Error).message}`);
@@ -282,6 +289,7 @@ export const asyncPostNewComment = ({threadId, content}: CommentAsyncRequest) =>
     newComment = await threadApi.postNewComment( threadId, content );
     newComment.threadId = threadId;
     dispatch(addComment(newComment));
+    await dispatch(asyncGetLeaderboards())
     toast.success('Post new comment success', { id: toastId });
   } catch (error) {
     console.log((error as Error).message);

@@ -13,13 +13,19 @@ import ThreadDetail from '@/pages/ThreadDetail';
 import Leaderboard from '@/pages/Leaderboard';
 import NewThread from '@/pages/NewThread';
 import PublicRoute from '@/routes/PublicRoute';
-import PrivateRoute from './routes/PrivateRoute';
+import PrivateRoute from '@/routes/PrivateRoute';
+import { useAppDispatch } from '@/app/hooks';
+import { asyncGetLeaderboards } from './services/states/leaderboard-slice';
 
 function App() {
   const { loginDispatch } = useLogin();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     loginDispatch({
+      successAction: async () => {
+        await dispatch(asyncGetLeaderboards());
+      },
       errorAction: (error) => {
         console.log('error action', error.message);
       },
