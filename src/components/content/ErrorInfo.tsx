@@ -29,7 +29,7 @@ function ErrorInfo({
       <p>{desc}</p>
       <div className="flex justify-center">
         <Button onClick={onBackHandler} className="mt-4">
-          Kembali ke Home
+          Back to Home
         </Button>
       </div>
     </div>
