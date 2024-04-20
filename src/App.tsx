@@ -17,6 +17,7 @@ import PrivateRoute from '@/routes/PrivateRoute';
 import { useAppDispatch } from '@/app/hooks';
 import { asyncGetLeaderboards } from './services/states/leaderboard-slice';
 import ErrorPage from '@/pages/ErrorPage';
+import AuthVerifyRoute from '@/routes/AuthVerifyRoute';
 
 function App() {
   const { loginDispatch } = useLogin();
@@ -34,7 +35,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <AuthVerifyRoute>
       <LoadingProgress />
       <div className="bg-gray-100">
         <Navbar />
@@ -58,7 +59,7 @@ function App() {
         </Container>
       </div>
       <ScrollToTop />
-    </>
+    </AuthVerifyRoute>
   );
 }
 
