@@ -1,6 +1,6 @@
 import { Linkedin, Github, Heart } from 'lucide-react';
 import Container from '@/components/layout/Container';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 
 function Footer() {
   return (
