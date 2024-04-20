@@ -16,6 +16,7 @@ import PublicRoute from '@/routes/PublicRoute';
 import PrivateRoute from '@/routes/PrivateRoute';
 import { useAppDispatch } from '@/app/hooks';
 import { asyncGetLeaderboards } from './services/states/leaderboard-slice';
+import ErrorPage from '@/pages/ErrorPage';
 
 function App() {
   const { loginDispatch } = useLogin();
@@ -51,6 +52,7 @@ function App() {
             <Route path="/" element={<PrivateRoute />}>
               <Route path="/new-thread" element={<NewThread />} />
             </Route>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
           <Toaster />
         </Container>
