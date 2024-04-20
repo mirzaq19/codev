@@ -7,9 +7,11 @@ import { DetailThread } from '@/types/thread';
 import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
 import CommentItem from '@/components/content/CommentItem';
 import CommentBox from '@/components/content/CommentBox';
+import ErrorInfo from '@/components/content/ErrorInfo';
 
 function ThreadDetail() {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<boolean>(false);
   const { id } = useParams<{ id: string }>();
   const { detailThread } = useAppSelector((state) => state.thread);
   const { authenticated } = useAppSelector((state) => state.auth);
@@ -17,11 +19,24 @@ function ThreadDetail() {
 
   useEffect(() => {
     const fetchDetailThread = async () => {
-      await dispatch(asyncGetDetailThread(id as string));
+      const status = await dispatch(asyncGetDetailThread(id as string));
+      if (!status) setError(true);
       setLoading(false);
     };
     fetchDetailThread();
   }, [id]);
+
+  if (error) {
+    return (
+      <div className="min-h-main flex flex-col justify-center items-center">
+        <ErrorInfo
+          statusCode={404}
+          title="Thread not found"
+          desc="The thread you are looking for is not found"
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-main mt-4 py-4 px-4 lg:px-0">
