@@ -12,7 +12,7 @@ const useLogin = () => {
   const dispatch = useAppDispatch();
   const loginDispatch = async ({
     initialAction = () => {},
-    sucessAction = () => {},
+    successAction = () => {},
     errorAction = (error: Error) => {
       console.log(error?.message);
     },
@@ -31,7 +31,7 @@ const useLogin = () => {
       const response = await authApi.getOwnProfile();
       dispatch(populate(response));
 
-      if (sucessAction) sucessAction();
+      if (successAction) successAction();
     } catch (error) {
       if (errorAction) errorAction(error as Error);
 
