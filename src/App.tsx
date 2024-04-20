@@ -18,6 +18,7 @@ import { useAppDispatch } from '@/app/hooks';
 import { asyncGetLeaderboards } from './services/states/leaderboard-slice';
 import ErrorPage from '@/pages/ErrorPage';
 import AuthVerifyRoute from '@/routes/AuthVerifyRoute';
+import Footer from '@/components/content/Footer';
 
 function App() {
   const { loginDispatch } = useLogin();
@@ -57,6 +58,7 @@ function App() {
           </Routes>
           <Toaster />
         </Container>
+        <Footer />
       </div>
       <ScrollToTop />
     </AuthVerifyRoute>
