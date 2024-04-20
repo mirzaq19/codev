@@ -44,6 +44,7 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
           to upvote
         </span>
       ));
+      return;
     }
     if (hasToNeutralize) {
       dispatch(asyncNeutralizeVotes({ threadId, userId: user?.id as string }));
@@ -63,6 +64,7 @@ function ThreadItem({ thread, className, ...rest }: ThreadItemProps) {
           to downvote
         </span>
       ));
+      return;
     }
     if (hasToNeutralize) {
       dispatch(asyncNeutralizeVotes({ threadId, userId: user?.id as string }));
