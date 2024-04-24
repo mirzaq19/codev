@@ -126,7 +126,7 @@ export const threadSlice = createSlice({
     addComment: (state, action: PayloadAction<CommentRequest>) => {
       const { detailThread } = state;
       if (detailThread && detailThread.id === action.payload.threadId) {
-        detailThread.comments.unshift(action.payload);
+        detailThread.comments.unshift(action.payload.comment);
       }
     },
   },
@@ -282,13 +282,16 @@ export const asyncPostNewThread = ({title, body, category}: NewThreadRequest) =>
 export const asyncPostNewComment = ({threadId, content}: CommentAsyncRequest) => async (dispatch: AppDispatch) => {
   const { addComment } = threadSlice.actions;
   let status = true;
-  let newComment
+  let newComment;
   dispatch(showLoading());
   const toastId = toast.loading('Posting new comment...');
   try {
     newComment = await threadApi.postNewComment( threadId, content );
-    newComment.threadId = threadId;
-    dispatch(addComment(newComment));
+    const commentRequest: CommentRequest = {
+      comment: newComment,
+      threadId,
+    };
+    dispatch(addComment(commentRequest));
     await dispatch(asyncGetLeaderboards())
     toast.success('Post new comment success', { id: toastId });
   } catch (error) {
