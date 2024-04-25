@@ -21,5 +21,6 @@ module.exports = {
     'react/require-default-props': 'off',
     'no-console': 'off',
     'no-param-reassign': 'off',
+    'no-underscore-dangle': 'off',
   },
 };
