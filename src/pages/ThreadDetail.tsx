@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/app/hooks';
-import { asyncGetDetailThread } from '@/services/states/thread-slice';
+import {
+  asyncGetDetailThread,
+  asyncPostNewComment,
+} from '@/services/states/thread-slice';
 import ThreadDetailItem from '@/components/content/ThreadDetailItem';
 import { DetailThread } from '@/types/thread';
 import ThreadSkeleton from '@/components/skeleton/ThreadSkeleton';
@@ -25,6 +28,15 @@ function ThreadDetail() {
     };
     fetchDetailThread();
   }, [id]);
+
+  const onCommentSubmit = async (comment: string) => {
+    await dispatch(
+      asyncPostNewComment({
+        threadId: detailThread?.id as string,
+        content: comment,
+      }),
+    );
+  };
 
   if (error) {
     return (
@@ -55,7 +67,9 @@ function ThreadDetail() {
               </p>
             </div>
           )}
-          {authenticated && <CommentBox className="mt-4" />}
+          {authenticated && (
+            <CommentBox onCommentSubmit={onCommentSubmit} className="mt-4" />
+          )}
           <div>
             <h2 className="text-xl font-bold my-4">
               Comments ({detailThread?.comments.length})

@@ -12,10 +12,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { cn } from '@/lib/utils';
-import { useAppDispatch, useAppSelector } from '@/app/hooks';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { asyncPostNewComment } from '@/services/states/thread-slice';
 
 const formSchema = z.object({
   comment: z.string().min(1, {
@@ -24,13 +22,18 @@ const formSchema = z.object({
 });
 
 type CommentBoxProps = {
+  placeholder?: string;
+  onCommentSubmit: (comment: string) => Promise<void>;
   className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-function CommentBox({ className, ...rest }: CommentBoxProps) {
+function CommentBox({
+  placeholder = 'Enter your comment here...',
+  onCommentSubmit,
+  className,
+  ...rest
+}: CommentBoxProps) {
   const [loading, setLoading] = useState(false);
-  const { detailThread } = useAppSelector((state) => state.thread);
-  const dispatch = useAppDispatch();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,13 +45,7 @@ function CommentBox({ className, ...rest }: CommentBoxProps) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     const { comment } = values;
-    console.log(comment);
-    await dispatch(
-      asyncPostNewComment({
-        threadId: detailThread?.id as string,
-        content: comment,
-      }),
-    );
+    await onCommentSubmit(comment);
     setLoading(false);
     form.reset();
   };
@@ -67,7 +64,7 @@ function CommentBox({ className, ...rest }: CommentBoxProps) {
                 <FormLabel>Comment</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Enter your comment here..."
+                    placeholder={placeholder}
                     className="resize-none min-h-28 placeholder-shown:min-h-3 transition-all duration-200 ease-in-out focus-visible:ring-offset-0"
                     {...field}
                   />
