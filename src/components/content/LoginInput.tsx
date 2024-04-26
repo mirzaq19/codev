@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import codevlogo from '@/assets/logo/codev-logo.svg';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +19,7 @@ import { Input } from '@/components/ui/input';
 
 type LoginInputProps = {
   handleLogin: (email: string, password: string) => Promise<void>;
-};
+} & React.HTMLAttributes<HTMLDivElement>;
 
 const formSchema = z.object({
   email: z
@@ -34,7 +35,7 @@ const formSchema = z.object({
   }),
 });
 
-function LoginInput({ handleLogin }: LoginInputProps) {
+function LoginInput({ handleLogin, className, ...rest }: LoginInputProps) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,7 +54,14 @@ function LoginInput({ handleLogin }: LoginInputProps) {
   };
 
   return (
-    <>
+    <div
+      className={cn(
+        'max-w-3xl w-full mx-auto',
+        'bg-white rounded-md p-8',
+        className,
+      )}
+      {...rest}
+    >
       <div className="flex flex-col items-center justify-center gap-3">
         <img
           src={codevlogo}
@@ -108,7 +116,7 @@ function LoginInput({ handleLogin }: LoginInputProps) {
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
 export default LoginInput;
