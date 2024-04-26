@@ -30,7 +30,7 @@ const fakeGetOwnProfileResponse = {
 };
 const fakeErrorResponse = new Error('email or password is wrong');
 
-describe('asyncPopulateUsersAndTalks thunk', () => {
+describe('asyncLoginUser thunk', () => {
   beforeEach(() => {
     // backup original implementation
     (authApi as any)._login = authApi.login;
