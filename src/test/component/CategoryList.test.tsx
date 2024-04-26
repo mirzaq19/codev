@@ -9,7 +9,7 @@ expect.extend(matchers);
 
 const categories = ['react', 'vue', 'angular'];
 
-describe('LoginInput component', () => {
+describe('CategoryList component', () => {
   afterEach(() => {
     cleanup();
   });
