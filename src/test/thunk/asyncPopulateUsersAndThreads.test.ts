@@ -64,7 +64,7 @@ const fakeUsersSuccessResponse: User[] = [
 
 const fakeErrorResponse = new Error('Ups, something went wrong');
 
-describe('asyncPopulateUsersAndTalks thunk', () => {
+describe('asyncPopulateUsersAndThreads thunk', () => {
   beforeEach(() => {
     // backup original implementation
     (userApi as any)._getAllUser = userApi.getAllUsers;
