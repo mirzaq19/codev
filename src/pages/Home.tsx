@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 
 function Home() {
   const [loading, setLoading] = useState(true);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { threads } = useAppSelector((state) => state.thread);
   const { users } = useAppSelector((state) => state.user);
@@ -26,6 +26,10 @@ function Home() {
     };
     fetchUsersAndThreads();
   }, [activeCategory]);
+
+  const onClickCategory = (category: string) => {
+    setSearchParams({ category });
+  };
 
   const categories = useMemo(
     () => [...new Set(threads.map((thread) => thread.category))],
@@ -66,6 +70,7 @@ function Home() {
           <h3 className=" mb-4">Categories</h3>
           <CategoryList
             activeCategory={activeCategory}
+            onClickCategory={onClickCategory}
             categories={categories}
           />
           <h3 className=" mb-4">Threads</h3>
