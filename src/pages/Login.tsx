@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { asyncLoginUser } from '@/services/states/auth-slice';
 import { useAppDispatch } from '@/app/hooks';
@@ -5,10 +6,11 @@ import LoginInput from '@/components/content/LoginInput';
 
 function Login() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async (email: string, password: string) => {
     const status = await dispatch(asyncLoginUser({ email, password }));
-    return status;
+    if (status) navigate('/');
   };
 
   return (

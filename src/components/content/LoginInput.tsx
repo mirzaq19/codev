@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Loader2 } from 'lucide-react';
@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 type LoginInputProps = {
-  handleLogin: (email: string, password: string) => Promise<boolean>;
+  handleLogin: (email: string, password: string) => Promise<void>;
 };
 
 const formSchema = z.object({
@@ -36,7 +36,6 @@ const formSchema = z.object({
 
 function LoginInput({ handleLogin }: LoginInputProps) {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,9 +48,8 @@ function LoginInput({ handleLogin }: LoginInputProps) {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     setLoading(true);
     const { email, password } = values;
-    const status = await handleLogin(email, password);
+    await handleLogin(email, password);
     setLoading(false);
-    if (status) navigate('/');
   };
 
   return (
