@@ -22,7 +22,7 @@ function CategoryList({
 }: CategoryListProps) {
   return (
     <ScrollArea className={className} {...rest}>
-      <div className="flex gap-2 mb-3 overflow-auto">
+      <div role="list" className="flex gap-2 mb-3 overflow-auto">
         <Button
           variant={activeCategory ? 'outline' : 'default'}
           onClick={() => onClickCategory('')}
