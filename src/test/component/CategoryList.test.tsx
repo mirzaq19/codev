@@ -108,7 +108,6 @@ describe('CategoryList component', () => {
     const list = await screen.getByRole('list');
     const { getByRole } = within(list);
     const reactCategoryItem = getByRole('link', { name: '#react' });
-    console.log(reactCategoryItem);
 
     // Action
     await userEvent.click(reactCategoryItem);
