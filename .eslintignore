@@ -7,3 +7,4 @@ postcss.config.js
 dist/
 node_modules/
 *.cy.ts
+cypress.config.ts
