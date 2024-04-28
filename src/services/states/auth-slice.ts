@@ -33,7 +33,7 @@ export const authSlice = createSlice({
       state.authenticated = false;
     },
     stopLoading: (state) => {
-      state.loading = true;
+      state.loading = false;
     },
   },
 });
