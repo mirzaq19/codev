@@ -91,6 +91,7 @@ function Navbar({ classname, ...rest }: NavbarProps) {
                         <TooltipTrigger asChild>
                           <Button
                             variant="outline"
+                            data-testid="leaderboard-score"
                             className="flex items-center gap-1 px-2 cursor-auto"
                           >
                             <Zap
