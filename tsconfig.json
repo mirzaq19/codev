@@ -23,11 +23,10 @@
     /* Paths Resolving */
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+      "@/*": ["./src/*"]
+    },
+    "types": ["cypress"]
   },
-  "include": ["src"],
+  "include": ["src", "node_modules/cypress/types/*", "cypress/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

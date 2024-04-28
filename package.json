@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "test": "vitest --no-watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "e2e": "cypress run"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
@@ -70,10 +71,12 @@
     "@typescript-eslint/parser": "^7.0.0",
     "@vitejs/plugin-react": "^4.2.1",
     "autoprefixer": "^10.4.18",
+    "cypress": "^13.8.1",
     "eslint": "^8.56.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-cypress": "^3.0.2",
     "eslint-plugin-import": "2.25.3",
     "eslint-plugin-jsx-a11y": "6.5.1",
     "eslint-plugin-prettier": "^5.1.3",

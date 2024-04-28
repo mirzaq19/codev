@@ -1,7 +1,12 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
-  extends: ['airbnb', 'airbnb-typescript', 'prettier', 'plugin:storybook/recommended'],
+  env: { browser: true, es2020: true, 'cypress/globals': true },
+  extends: [
+    'airbnb',
+    'airbnb-typescript',
+    'prettier',
+    'plugin:storybook/recommended',
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -11,7 +16,7 @@ module.exports = {
     sourceType: 'module',
     project: './tsconfig.json',
   },
-  plugins: ['@typescript-eslint', 'prettier'],
+  plugins: ['@typescript-eslint', 'prettier', 'cypress'],
   rules: {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',

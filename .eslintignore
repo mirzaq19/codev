@@ -6,3 +6,4 @@ postcss.config.js
 .eslintrc.cjs
 dist/
 node_modules/
+*.cy.ts
