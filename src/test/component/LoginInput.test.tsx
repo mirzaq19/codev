@@ -1,3 +1,13 @@
+/**
+ * test scenario for LoginInput component
+ *
+ * - LoginInput component function
+ *  - should render category list corectly
+ *  - should handle password typing correctly
+ *  - should call login function when login button is clicked
+ *
+ */
+
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';

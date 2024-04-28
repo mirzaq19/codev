@@ -1,3 +1,12 @@
+/**
+ * test scenario for ThreadList component
+ *
+ * - ThreadList component function
+ *  - should render all threads correctly
+ *  - should correctly render upvote and downvote buttton
+ *
+ */
+
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers';
@@ -5,7 +14,6 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { store } from '@/app/store';
 import ThreadList from '@/components/layout/ThreadList';
-// import { ThreadWithOwner } from '@/types/thread';
 import threadApi from '@/services/apis/thread-api';
 import leaderboardApi from '@/services/apis/leaderboard-api';
 

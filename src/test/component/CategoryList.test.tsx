@@ -1,3 +1,14 @@
+/**
+ * test scenario for CategoryList component
+ *
+ * - CategoryList component function
+ *  - should render category list corectly
+ *  - should render category list corectly even categories are empty
+ *  - should render correctly active category to all if activeCategory property is null
+ *  - should render correctly and calling handle click category function
+ *
+ */
+
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { cleanup, render, screen, within } from '@testing-library/react';
 import matchers from '@testing-library/jest-dom/matchers';
